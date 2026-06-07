@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mimi — روايات</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FAFAF8;
+    --cream: #F5F2EC;
+    --green-light: #C8E6C9;
+    --green-mid: #81C784;
+    --green-main: #4CAF50;
+    --green-deep: #2E7D32;
+    --green-dark: #1B5E20;
+    --green-muted: #A5D6A7;
+    --text-dark: #1a2e1a;
+    --text-mid: #2d4a2d;
+    --text-light: #5a7a5a;
+    --gold: #C8A951;
+    --shadow: rgba(46, 125, 50, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== LOGIN PAGE ===== */
+  #login-page {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e9 40%, #c8e6c9 100%);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  #login-page.hidden {
+    opacity: 0; transform: scale(1.05); pointer-events: none;
+  }
+
+  .login-bg {
+    position: absolute; inset: 0; overflow: hidden;
+  }
+
+  .login-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,199,132,0.3) 0%, transparent 70%);
+    top: -150px; right: -150px;
+    animation: floatBg 8s ease-in-out infinite;
+  }
+
+  .login-bg::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(76,175,80,0.2) 0%, transparent 70%);
+    bottom: -100px; left: -100px;
+    animation: floatBg 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes floatBg {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.05); }
+  }
+
+  .login-card {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(129,199,132,0.4);
+    border-radius: 32px;
+    padding: 60px 50px;
+    width: 420px;
+    box-shadow: 0 30px 80px rgba(46,125,50,0.15), 0 0 0 1px rgba(255,255,255,0.5);
+    animation: cardIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .login-logo {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .login-script {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 72px;
+    color: var(--green-deep);
+    line-height: 1;
+    display: block;
+    text-shadow: 2px 4px 12px rgba(46,125,50,0.2);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { text-shadow: 2px 4px 12px rgba(46,125,50,0.2); }
+    50% { text-shadow: 2px 4px 20px rgba(46,125,50,0.4), 0 0 40px rgba(129,199,132,0.3); }
+  }
+
+  .login-subtitle {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    color: var(--green-main);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+  }
+
+  .login-field {
+    margin-bottom: 20px;
+  }
+
+  .login-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .login-field input {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(232,245,233,0.6);
+    border: 1.5px solid rgba(129,199,132,0.5);
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    outline: none;
+    transition: all 0.3s ease;
+    text-align: right;
+  }
+
+  .login-field input:focus {
+    border-color: var(--green-main);
+    background: rgba(200,230,201,0.3);
+    box-shadow: 0 0 0 4px rgba(76,175,80,0.1);
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(46,125,50,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .login-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(46,125,50,0.4); }
+  .login-btn:hover::after { opacity: 1; }
+  .login-btn:active { transform: translateY(0); }
+
+  .login-error {
+    color: #c62828;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 12px;
+    height: 16px;
+    transition: all 0.3s;
+  }
+
+  .not-mimi-btn {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    border: 1.5px solid rgba(129,199,132,0.6);
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    color: var(--text-light);
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+  }
+  .not-mimi-btn:hover {
+    background: rgba(232,245,233,0.5);
+    border-color: var(--green-main);
+    color: var(--green-deep);
+    transform: translateY(-1px);
+  }
+
+  /* ===== READER LOGIN ===== */
+  #reader-login-page {
+    position: fixed; inset: 0; z-index: 999;
+    display: none;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e9 40%, #c8e6c9 100%);
+    transition: opacity 0.5s ease;
+  }
+  #reader-login-page.show { display: flex; }
+  #reader-login-page.hidden { opacity: 0; pointer-events: none; }
+
+  .reader-card {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(129,199,132,0.35);
+    border-radius: 32px;
+    padding: 52px 44px;
+    width: 420px;
+    box-shadow: 0 30px 80px rgba(46,125,50,0.12), 0 0 0 1px rgba(255,255,255,0.5);
+    animation: cardIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .reader-icon {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .reader-big-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 6px 12px rgba(46,125,50,0.2));
+  }
+
+  .reader-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .reader-subtitle-text {
+    font-size: 13px;
+    color: var(--text-light);
+    letter-spacing: 2px;
+    display: block;
+  }
+
+  .reader-divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-mid), transparent);
+    margin: 20px auto;
+  }
+
+  .reader-hint {
+    background: rgba(232,245,233,0.5);
+    border: 1px solid var(--green-light);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .back-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1.5px solid var(--green-light);
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s;
+  }
+  .back-btn:hover { background: var(--green-light); color: var(--text-dark); }
+
+  /* ===== SUCCESS SCREEN ===== */
+  .reader-success-msg {
+    text-align: center;
+    padding: 10px 0 4px;
+  }
+
+  .success-check {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    border-radius: 50%;
+    font-size: 28px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    box-shadow: 0 8px 24px rgba(46,125,50,0.35);
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  .success-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+
+  .success-sub {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ===== MAIN SITE ===== */
+  #main-site { display: none; min-height: 100vh; }
+  #main-site.visible { display: block; }
+
+  /* Header */
+  header {
+    background: white;
+    border-bottom: 2px solid var(--green-light);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 20px rgba(46,125,50,0.08);
+  }
+
+  .header-logo {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 48px;
+    color: var(--green-deep);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .header-logo:hover { color: var(--green-main); }
+
+  .header-nav {
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .nav-btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+  }
+
+  .btn-home {
+    background: var(--green-light);
+    color: var(--green-dark);
+  }
+  .btn-home:hover { background: var(--green-mid); color: white; }
+
+  .btn-add {
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    box-shadow: 0 4px 14px rgba(46,125,50,0.3);
+  }
+  .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(46,125,50,0.4); }
+
+  .btn-logout {
+    background: transparent;
+    color: var(--text-light);
+    border: 1.5px solid var(--green-light) !important;
+    font-size: 12px;
+  }
+  .btn-logout:hover { background: var(--green-light); color: var(--text-dark); }
+
+  /* ===== PAGES ===== */
+  .page { display: none; }
+  .page.active { display: block; animation: pageIn 0.5s ease; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== HOME PAGE ===== */
+  .hero {
+    background: linear-gradient(160deg, #f1f8f1 0%, #e8f5e9 50%, #dcedc8 100%);
+    padding: 80px 40px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '✦';
+    position: absolute;
+    font-size: 200px;
+    color: rgba(129,199,132,0.12);
+    top: -30px; left: 50%;
+    transform: translateX(-50%);
+    animation: spinSlow 30s linear infinite;
+  }
+
+  @keyframes spinSlow { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
+
+  .hero-title {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 100px;
+    color: var(--green-deep);
+    line-height: 1;
+    position: relative;
+    text-shadow: 3px 6px 20px rgba(46,125,50,0.15);
+  }
+
+  .hero-subtitle {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    color: var(--green-main);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  .hero-divider {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-main), transparent);
+    margin: 24px auto;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text-light);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* Novels Grid */
+  .novels-section {
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--green-light), transparent);
+  }
+
+  .novels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+  }
+
+  .novel-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px var(--shadow);
+    border: 1px solid rgba(200,230,201,0.5);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .novel-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(46,125,50,0.2);
+    border-color: var(--green-mid);
+  }
+
+  .novel-cover {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-size: 80px;
+  }
+
+  .novel-cover::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15));
+  }
+
+  .novel-body { padding: 20px; }
+
+  .novel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .novel-desc {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .novel-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    border-top: 1px solid var(--green-light);
+    background: rgba(232,245,233,0.4);
+  }
+
+  .novel-genre {
+    font-size: 11px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .novel-chapters {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .novel-actions {
+    display: flex; gap: 6px;
+    padding: 12px 20px 16px;
+  }
+
+  .btn-read {
+    flex: 1;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+  }
+  .btn-read:hover { opacity: 0.9; transform: scale(1.02); }
+
+  .btn-edit {
+    padding: 10px 14px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-edit:hover { background: var(--green-mid); color: white; }
+
+  .btn-delete {
+    padding: 10px 14px;
+    background: rgba(198,40,40,0.08);
+    color: #c62828;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-delete:hover { background: rgba(198,40,40,0.15); }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-light);
+  }
+
+  .empty-icon { font-size: 60px; margin-bottom: 20px; opacity: 0.5; }
+  .empty-text { font-size: 18px; margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+  .empty-sub { font-size: 14px; }
+
+  /* ===== ADD/EDIT NOVEL PAGE ===== */
+  .form-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .form-title {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 56px;
+    color: var(--green-deep);
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .form-card {
+    background: white;
+    border-radius: 28px;
+    padding: 40px;
+    box-shadow: 0 12px 40px var(--shadow);
+    border: 1px solid rgba(200,230,201,0.6);
+  }
+
+  .form-group { margin-bottom: 24px; }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid var(--green-light);
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    background: rgba(232,245,233,0.3);
+    outline: none;
+    transition: all 0.3s;
+    text-align: right;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--green-main);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(76,175,80,0.1);
+  }
+
+  .form-group textarea { min-height: 120px; }
+
+  .emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .emoji-opt {
+    font-size: 30px;
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    background: rgba(232,245,233,0.3);
+  }
+
+  .emoji-opt:hover, .emoji-opt.selected {
+    border-color: var(--green-main);
+    background: rgba(76,175,80,0.1);
+    transform: scale(1.1);
+  }
+
+  .color-grid {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;
+  }
+
+  .color-opt {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .color-opt.selected, .color-opt:hover {
+    border-color: var(--green-dark);
+    transform: scale(1.15);
+  }
+
+  .form-submit {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    box-shadow: 0 8px 24px rgba(46,125,50,0.3);
+  }
+  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(46,125,50,0.4); }
+
+  /* ===== NOVEL READING PAGE ===== */
+  .novel-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .novel-header-section {
+    text-align: center;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--green-light);
+    position: relative;
+  }
+
+  .novel-big-cover {
+    font-size: 100px;
+    display: block;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 10px 20px rgba(46,125,50,0.2));
+  }
+
+  .novel-page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+  }
+
+  .novel-page-desc {
+    font-size: 16px;
+    color: var(--text-light);
+    line-height: 1.8;
+    max-width: 560px;
+    margin: 0 auto 20px;
+  }
+
+  .chapter-add-btn {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(46,125,50,0.3);
+    letter-spacing: 1px;
+  }
+  .chapter-add-btn:hover { transform: translateY(-2px); }
+
+  .chapters-list { }
+
+  .chapter-item {
+    background: white;
+    border: 1px solid var(--green-light);
+    border-radius: 18px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px var(--shadow);
+  }
+  .chapter-item:hover { box-shadow: 0 8px 25px rgba(46,125,50,0.15); }
+
+  .chapter-header {
+    display: flex; align-items: center;
+    padding: 20px 24px;
+    cursor: pointer;
+    justify-content: space-between;
+  }
+
+  .chapter-num {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--green-main), var(--green-deep));
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .chapter-title-text {
+    flex: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--text-dark);
+    margin: 0 16px;
+    text-align: right;
+  }
+
+  .chapter-arrow {
+    color: var(--green-main);
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .chapter-content-wrap {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .chapter-content-wrap.open { max-height: 2000px; }
+
+  .chapter-content {
+    padding: 0 24px 24px;
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-mid);
+    white-space: pre-wrap;
+    border-top: 1px solid var(--green-light);
+    padding-top: 20px;
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  .chapter-actions-bar {
+    display: flex; gap: 8px;
+    padding: 0 24px 16px;
+    justify-content: flex-end;
+  }
+
+  .btn-sm {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  /* ===== CHAPTER MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(6px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: white;
+    border-radius: 28px;
+    padding: 40px;
+    width: 90%; max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+    transform: translateY(30px);
+    transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--text-dark);
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: -8px; left: -8px;
+    width: 32px; height: 32px;
+    background: var(--green-light);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green-dark);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+    background: var(--green-deep);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(46,125,50,0.4);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--green-mid); border-radius: 10px; }
+
+  @media (max-width: 600px) {
+    .login-card { width: 92%; padding: 40px 28px; }
+    .login-script { font-size: 56px; }
+    .hero-title { font-size: 70px; }
+    header { padding: 0 20px; }
+    .novels-section, .form-page, .novel-page { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="login-page">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="login-script">Mimi</span>
+      <span class="login-subtitle">مكتبة الروايات الخاصة</span>
+    </div>
+    <div class="login-field">
+      <label>اسم المستخدم</label>
+      <input type="text" id="username-input" placeholder="اكتبي اسم المستخدم" autocomplete="off">
+    </div>
+    <div class="login-field">
+      <label>كلمة المرور</label>
+      <input type="password" id="password-input" placeholder="••••••••••">
+    </div>
+    <button class="login-btn" onclick="doLogin()">دخول ✦</button>
+    <div class="login-error" id="login-error"></div>
+    <button class="not-mimi-btn" onclick="showReaderSuccess()">أنا لست مريدولا 📖</button>
+  </div>
+</div>
+
+<!-- READER SUCCESS PAGE -->
+<div id="reader-login-page">
+  <div class="login-bg"></div>
+  <div class="reader-card">
+    <div class="reader-icon">
+      <span class="reader-big-icon">📖</span>
+      <span class="reader-title">أهلاً بك ✦</span>
+      <span class="reader-subtitle-text">مكتبة Mimi</span>
+    </div>
+    <div class="reader-divider"></div>
+    <div class="reader-success-msg">
+      <div class="success-check">✓</div>
+      <div class="success-text">تم تسجيلك كـ قارئ</div>
+      <div class="success-sub">يمكنك الآن قراءة جميع الروايات</div>
+    </div>
+    <button class="login-btn" style="margin-top:28px" onclick="enterAsReader()">ادخل للمكتبة ✦</button>
+  </div>
+</div>
+
+<!-- MAIN SITE -->
+<div id="main-site">
+
+  <!-- Header -->
+  <header>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:22px">✦</span>
+      <span class="header-logo" onclick="showPage('home')">Mimi</span>
+    </div>
+    <div class="header-nav">
+      <button class="nav-btn btn-home" onclick="showPage('home')">الرئيسية</button>
+      <button class="nav-btn btn-add" id="add-novel-btn" onclick="showAddNovel()">+ رواية جديدة</button>
+      <button class="nav-btn btn-logout" onclick="logout()">خروج</button>
+    </div>
+  </header>
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-title">Mimi</div>
+      <div class="hero-subtitle">مكتبة الروايات الخاصة</div>
+      <div class="hero-divider"></div>
+      <div class="hero-desc">كل رواية هي عالم منفرد، وكل كلمة هي خطوة في رحلة لا تُنسى ✦</div>
+    </div>
+
+    <div class="novels-section">
+      <div class="section-title">الروايات</div>
+      <div class="novels-grid" id="novels-grid">
+        <!-- novels rendered here -->
+      </div>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="empty-icon">📚</div>
+        <div class="empty-text">لا توجد روايات بعد</div>
+        <div class="empty-sub">ابدئي بإضافة روايتك الأولى ✦</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD/EDIT NOVEL PAGE -->
+  <div class="page" id="page-add-novel">
+    <div class="form-page">
+      <div class="form-title" id="form-page-title">رواية جديدة ✦</div>
+      <div class="form-card">
+        <input type="hidden" id="edit-novel-id">
+        <div class="form-group">
+          <label>عنوان الرواية</label>
+          <input type="text" id="novel-title-input" placeholder="اكتبي عنوان الرواية">
+        </div>
+        <div class="form-group">
+          <label>وصف مختصر</label>
+          <textarea id="novel-desc-input" placeholder="اكتبي ملخص أو وصف للرواية..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>التصنيف</label>
+          <select id="novel-genre-input">
+            <option value="رومانسية">رومانسية 💕</option>
+            <option value="دراما">دراما 🎭</option>
+            <option value="غموض">غموض 🔍</option>
+            <option value="خيال">خيال 🌙</option>
+            <option value="مغامرة">مغامرة ⚔️</option>
+            <option value="كوميديا">كوميديا 😄</option>
+            <option value="رعب">رعب 👻</option>
+            <option value="تاريخية">تاريخية 📜</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>أيقونة الرواية</label>
+          <div class="emoji-grid" id="emoji-grid">
+            <!-- emojis -->
+          </div>
+        </div>
+        <div class="form-group">
+          <label>لون الغلاف</label>
+          <div class="color-grid" id="color-grid"></div>
+        </div>
+        <button class="form-submit" onclick="saveNovel()" id="save-novel-btn">حفظ الرواية ✦</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOVEL READING PAGE -->
+  <div class="page" id="page-novel">
+    <div class="novel-page">
+      <div class="novel-header-section">
+        <span class="novel-big-cover" id="nv-cover"></span>
+        <div class="novel-page-title" id="nv-title"></div>
+        <div class="novel-genre" id="nv-genre" style="display:inline-block;margin-bottom:16px"></div>
+        <div class="novel-page-desc" id="nv-desc"></div>
+        <button class="chapter-add-btn" id="chapter-add-btn" onclick="openChapterModal()">+ إضافة فصل جديد</button>
+      </div>
+      <div class="chapters-list" id="chapters-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chapter Modal -->
+<div class="modal-overlay" id="chapter-modal">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closeChapterModal()">✕</button>
+    <div class="modal-title" id="modal-title">فصل جديد ✦</div>
+    <div class="form-group">
+      <label>عنوان الفصل</label>
+      <input type="text" id="chapter-title-input" placeholder="مثال: الفصل الأول — البداية">
+    </div>
+    <div class="form-group">
+      <label>محتوى الفصل</label>
+      <textarea id="chapter-content-input" style="min-height:200px" placeholder="اكتبي هنا محتوى الفصل..."></textarea>
+    </div>
+    <input type="hidden" id="edit-chapter-id">
+    <button class="form-submit" onclick="saveChapter()">حفظ الفصل ✦</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+let novels = JSON.parse(localStorage.getItem('mimi_novels') || '[]');
+let currentNovelId = null;
+let editChapterIdx = null;
+let isReaderMode = false;
+
+const EMOJIS = ['📖','📚','🌹','🌙','✨','💫','🌸','🦋','🌺','🌿','💎','🏰','🗡️','🌊','🔮','💌','🕊️','🌟','🎭','🦚'];
+const COLORS = [
+  'linear-gradient(135deg,#C8E6C9,#81C784)',
+  'linear-gradient(135deg,#A5D6A7,#4CAF50)',
+  'linear-gradient(135deg,#DCEDC8,#8BC34A)',
+  'linear-gradient(135deg,#F0F4C3,#CDDC39)',
+  'linear-gradient(135deg,#E1F5FE,#4FC3F7)',
+  'linear-gradient(135deg,#FCE4EC,#F48FB1)',
+  'linear-gradient(135deg,#F3E5F5,#CE93D8)',
+  'linear-gradient(135deg,#FFF3E0,#FFCC02)',
+  'linear-gradient(135deg,#E8EAF6,#7986CB)',
+  'linear-gradient(135deg,#E0F2F1,#4DB6AC)',
+  'linear-gradient(135deg,#EFEBE9,#A1887F)',
+  'linear-gradient(135deg,#FAFAFA,#B0BEC5)',
+];
+
+let selectedEmoji = EMOJIS[0];
+let selectedColor = COLORS[0];
+
+// ===== LOGIN =====
+function doLogin() {
+  const u = document.getElementById('username-input').value.trim();
+  const p = document.getElementById('password-input').value;
+  if (u === 'mimi' && p === 'stilloveyou') {
+    isReaderMode = false;
+    document.getElementById('login-page').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('login-page').style.display = 'none';
+      document.getElementById('main-site').classList.add('visible');
+      applyMode();
+      renderNovels();
+    }, 800);
+  } else {
+    const err = document.getElementById('login-error');
+    err.textContent = '✕ اسم المستخدم أو كلمة المرور غلط';
+    shakeCard('.login-card');
+  }
+}
+
+function showReaderSuccess() {
+  document.getElementById('login-page').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('login-page').style.display = 'none';
+    const rp = document.getElementById('reader-login-page');
+    rp.classList.add('show');
+  }, 400);
+}
+
+function enterAsReader() {
+  isReaderMode = true;
+  document.getElementById('reader-login-page').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('reader-login-page').classList.remove('show');
+    document.getElementById('reader-login-page').classList.remove('hidden');
+    document.getElementById('main-site').classList.add('visible');
+    applyMode();
+    renderNovels();
+  }, 500);
+}
+
+function doReaderLogin() {}
+function backToMainLogin() {}
+
+function applyMode() {
+  const addBtn = document.getElementById('add-novel-btn');
+  const chBtn = document.getElementById('chapter-add-btn');
+  if (isReaderMode) {
+    addBtn.style.display = 'none';
+    if (chBtn) chBtn.style.display = 'none';
+  } else {
+    addBtn.style.display = '';
+    if (chBtn) chBtn.style.display = '';
+  }
+}
+
+function shakeCard(selector) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.style.animation = 'shake 0.5s ease';
+  setTimeout(() => el.style.animation = '', 500);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const lp = document.getElementById('login-page');
+    const rp = document.getElementById('reader-login-page');
+    if (lp.style.display !== 'none' && !lp.classList.contains('hidden')) doLogin();
+    else if (rp.classList.contains('show') && !rp.classList.contains('hidden')) doReaderLogin();
+  }
+});
+
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }`;
+document.head.appendChild(shakeStyle);
+
+function logout() {
+  isReaderMode = false;
+  document.getElementById('main-site').classList.remove('visible');
+  const lp = document.getElementById('login-page');
+  lp.style.display = 'flex';
+  setTimeout(() => lp.classList.remove('hidden'), 10);
+  document.getElementById('username-input').value = '';
+  document.getElementById('password-input').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+// ===== PAGES =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== NOVEL FORM =====
+function buildEmojiGrid() {
+  const grid = document.getElementById('emoji-grid');
+  grid.innerHTML = EMOJIS.map((e,i) =>
+    `<div class="emoji-opt${i===0?' selected':''}" onclick="selectEmoji(this,'${e}')">${e}</div>`
+  ).join('');
+}
+
+function buildColorGrid() {
+  const grid = document.getElementById('color-grid');
+  grid.innerHTML = COLORS.map((c,i) =>
+    `<div class="color-opt${i===0?' selected':''}" onclick="selectColor(this,${i})" style="background:${c}"></div>`
+  ).join('');
+}
+
+function selectEmoji(el, emoji) {
+  document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedEmoji = emoji;
+}
+
+function selectColor(el, idx) {
+  document.querySelectorAll('.color-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedColor = COLORS[idx];
+}
+
+function showAddNovel() {
+  document.getElementById('edit-novel-id').value = '';
+  document.getElementById('novel-title-input').value = '';
+  document.getElementById('novel-desc-input').value = '';
+  document.getElementById('novel-genre-input').value = 'رومانسية';
+  document.getElementById('form-page-title').textContent = 'رواية جديدة ✦';
+  document.getElementById('save-novel-btn').textContent = 'حفظ الرواية ✦';
+  selectedEmoji = EMOJIS[0]; selectedColor = COLORS[0];
+  buildEmojiGrid(); buildColorGrid();
+  showPage('add-novel');
+}
+
+function showEditNovel(id) {
+  const n = novels.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('edit-novel-id').value = id;
+  document.getElementById('novel-title-input').value = n.title;
+  document.getElementById('novel-desc-input').value = n.desc;
+  document.getElementById('novel-genre-input').value = n.genre;
+  document.getElementById('form-page-title').textContent = 'تعديل الرواية ✦';
+  document.getElementById('save-novel-btn').textContent = 'حفظ التعديلات ✦';
+  selectedEmoji = n.emoji;
+  selectedColor = n.color;
+  buildEmojiGrid(); buildColorGrid();
+  // mark correct selections
+  setTimeout(() => {
+    document.querySelectorAll('.emoji-opt').forEach(el => {
+      el.classList.toggle('selected', el.textContent === n.emoji);
+    });
+    const ci = COLORS.indexOf(n.color);
+    document.querySelectorAll('.color-opt').forEach((el, i) => {
+      el.classList.toggle('selected', i === ci);
+    });
+  }, 50);
+  showPage('add-novel');
+}
+
+function saveNovel() {
+  const title = document.getElementById('novel-title-input').value.trim();
+  const desc = document.getElementById('novel-desc-input').value.trim();
+  const genre = document.getElementById('novel-genre-input').value;
+  const editId = document.getElementById('edit-novel-id').value;
+  if (!title) { showToast('اكتبي عنوان الرواية أولاً'); return; }
+  if (editId) {
+    const n = novels.find(x => x.id === editId);
+    if (n) { n.title = title; n.desc = desc; n.genre = genre; n.emoji = selectedEmoji; n.color = selectedColor; }
+    showToast('تم تعديل الرواية ✦');
+  } else {
+    novels.push({ id: Date.now().toString(), title, desc, genre, emoji: selectedEmoji, color: selectedColor, chapters: [] });
+    showToast('تمت إضافة الرواية ✦');
+  }
+  saveData();
+  renderNovels();
+  showPage('home');
+}
+
+function deleteNovel(id) {
+  if (!confirm('هل تريدي حذف هذه الرواية؟')) return;
+  novels = novels.filter(x => x.id !== id);
+  saveData();
+  renderNovels();
+  showToast('تم حذف الرواية');
+}
+
+// ===== RENDER =====
+function renderNovels() {
+  const grid = document.getElementById('novels-grid');
+  const empty = document.getElementById('empty-state');
+  if (!novels.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = novels.map(n => `
+    <div class="novel-card">
+      <div class="novel-cover" style="background:${n.color}">${n.emoji}</div>
+      <div class="novel-body">
+        <div class="novel-title">${n.title}</div>
+        <div class="novel-desc">${n.desc || 'لا يوجد وصف'}</div>
+      </div>
+      <div class="novel-footer">
+        <span class="novel-genre">${n.genre}</span>
+        <span class="novel-chapters">${n.chapters?.length || 0} فصل</span>
+      </div>
+      <div class="novel-actions">
+        <button class="btn-read" onclick="openNovel('${n.id}')">اقرأ الرواية</button>
+        ${!isReaderMode ? `<button class="btn-edit" onclick="showEditNovel('${n.id}')">تعديل</button>
+        <button class="btn-delete" onclick="deleteNovel('${n.id}')">🗑</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== NOVEL PAGE =====
+function openNovel(id) {
+  currentNovelId = id;
+  const n = novels.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('nv-cover').textContent = n.emoji;
+  document.getElementById('nv-title').textContent = n.title;
+  document.getElementById('nv-genre').textContent = n.genre;
+  document.getElementById('nv-desc').textContent = n.desc || '';
+  renderChapters(n);
+  showPage('novel');
+}
+
+function renderChapters(n) {
+  const list = document.getElementById('chapters-list');
+  const chBtn = document.getElementById('chapter-add-btn');
+  if (chBtn) chBtn.style.display = isReaderMode ? 'none' : '';
+  if (!n.chapters || !n.chapters.length) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light)">لا توجد فصول بعد — ابدئي بإضافة فصلك الأول ✦</div>';
+    return;
+  }
+  list.innerHTML = n.chapters.map((ch, i) => `
+    <div class="chapter-item">
+      <div class="chapter-header" onclick="toggleChapter(${i})">
+        <span class="chapter-num">${i + 1}</span>
+        <span class="chapter-title-text">${ch.title}</span>
+        <span class="chapter-arrow" id="arr-${i}">▼</span>
+      </div>
+      <div class="chapter-content-wrap" id="cwrap-${i}">
+        <div class="chapter-content">${ch.content}</div>
+        ${!isReaderMode ? `<div class="chapter-actions-bar">
+          <button class="btn-sm btn-edit" onclick="editChapter(${i})">تعديل</button>
+          <button class="btn-sm btn-delete" onclick="deleteChapter(${i})">حذف</button>
+        </div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleChapter(i) {
+  const wrap = document.getElementById('cwrap-' + i);
+  const arr = document.getElementById('arr-' + i);
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open', !isOpen);
+  arr.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// ===== CHAPTERS =====
+function openChapterModal(idx = null) {
+  editChapterIdx = idx;
+  const modal = document.getElementById('chapter-modal');
+  if (idx !== null) {
+    const n = novels.find(x => x.id === currentNovelId);
+    const ch = n.chapters[idx];
+    document.getElementById('chapter-title-input').value = ch.title;
+    document.getElementById('chapter-content-input').value = ch.content;
+    document.getElementById('modal-title').textContent = 'تعديل الفصل ✦';
+  } else {
+    document.getElementById('chapter-title-input').value = '';
+    document.getElementById('chapter-content-input').value = '';
+    document.getElementById('modal-title').textContent = 'فصل جديد ✦';
+  }
+  modal.classList.add('open');
+}
+
+function closeChapterModal() {
+  document.getElementById('chapter-modal').classList.remove('open');
+  editChapterIdx = null;
+}
+
+function saveChapter() {
+  const title = document.getElementById('chapter-title-input').value.trim();
+  const content = document.getElementById('chapter-content-input').value.trim();
+  if (!title) { showToast('اكتبي عنوان الفصل'); return; }
+  const n = novels.find(x => x.id === currentNovelId);
+  if (!n) return;
+  if (!n.chapters) n.chapters = [];
+  if (editChapterIdx !== null) {
+    n.chapters[editChapterIdx] = { title, content };
+    showToast('تم تعديل الفصل ✦');
+  } else {
+    n.chapters.push({ title, content });
+    showToast('تمت إضافة الفصل ✦');
+  }
+  saveData();
+  renderChapters(n);
+  closeChapterModal();
+}
+
+function editChapter(i) { openChapterModal(i); }
+
+function deleteChapter(i) {
+  if (!confirm('هل تريدي حذف هذا الفصل؟')) return;
+  const n = novels.find(x => x.id === currentNovelId);
+  n.chapters.splice(i, 1);
+  saveData();
+  renderChapters(n);
+  showToast('تم حذف الفصل');
+}
+
+// ===== UTILS =====
+function saveData() {
+  localStorage.setItem('mimi_novels', JSON.stringify(novels));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// Close modal on overlay click
+document.getElementById('chapter-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeChapterModal();
+});
+
+// Init
+buildEmojiGrid();
+buildColorGrid();
+</script>
+</body>
+</html>
