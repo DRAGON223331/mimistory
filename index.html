@@ -1284,10 +1284,23 @@
 
 <script>
 // ===== DATA =====
-let novels = JSON.parse(localStorage.getItem('mimi_novels') || '[]');
+let novels = [];
 let currentNovelId = null;
 let editChapterIdx = null;
 let isReaderMode = false;
+
+// ===== CLOUD STORAGE INIT =====
+async function initData() {
+  try {
+    const result = await window.storage.get('mimi_novels', true);
+    if (result && result.value) {
+      novels = JSON.parse(result.value);
+    }
+  } catch (e) {
+    novels = [];
+  }
+}
+initData();
 
 const EMOJIS = ['📖','📚','🌹','🌙','✨','💫','🌸','🦋','🌺','🌿','💎','🏰','🗡️','🌊','🔮','💌','🕊️','🌟','🎭','🦚'];
 const COLORS = [
@@ -1315,10 +1328,11 @@ function doLogin() {
   if (u === 'mimi' && p === 'stilloveyou') {
     isReaderMode = false;
     document.getElementById('login-page').classList.add('hidden');
-    setTimeout(() => {
+    setTimeout(async () => {
       document.getElementById('login-page').style.display = 'none';
       document.getElementById('main-site').classList.add('visible');
       applyMode();
+      await initData();
       renderNovels();
     }, 800);
   } else {
@@ -1340,11 +1354,12 @@ function showReaderSuccess() {
 function enterAsReader() {
   isReaderMode = true;
   document.getElementById('reader-login-page').classList.add('hidden');
-  setTimeout(() => {
+  setTimeout(async () => {
     document.getElementById('reader-login-page').classList.remove('show');
     document.getElementById('reader-login-page').classList.remove('hidden');
     document.getElementById('main-site').classList.add('visible');
     applyMode();
+    await initData();
     renderNovels();
   }, 500);
 }
@@ -1620,8 +1635,12 @@ function deleteChapter(i) {
 }
 
 // ===== UTILS =====
-function saveData() {
-  localStorage.setItem('mimi_novels', JSON.stringify(novels));
+async function saveData() {
+  try {
+    await window.storage.set('mimi_novels', JSON.stringify(novels), true);
+  } catch (e) {
+    console.error('Save failed:', e);
+  }
 }
 
 function showToast(msg) {
